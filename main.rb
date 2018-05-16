@@ -11,12 +11,17 @@ require './awis.rb'
 STDOUT.sync = true
 
 KEYWORDS = [
-  "",
+  "cbd",
+  "kitchenware",
+  "bathroom linens",
+  "dog",
+  "wall prints",
 ]
 
 SEARCH_FORMATS = [
   "%s blog",
-  "%s store",
+  "buy %s",
+  "%s austin tx",
 ]
 
 # Google constant
@@ -24,6 +29,7 @@ RESULTS_PER_PAGE = 10
 
 NUM_RESULTS_TO_SCRAPE = 100
 PAGES_TO_SCRAPE = (NUM_RESULTS_TO_SCRAPE / RESULTS_PER_PAGE).ceil
+START_PAGE = 3
 
 def google_keyword_query(keyword, page_num)
   start = (page_num.to_i - 1) * RESULTS_PER_PAGE
@@ -108,7 +114,7 @@ end
 CSV.open("output.csv", "a+") do |csv|
   KEYWORDS.each do |keyword|
     SEARCH_FORMATS.each do |format|
-      (1..PAGES_TO_SCRAPE).each do |page_num|
+      (START_PAGE..PAGES_TO_SCRAPE).each do |page_num|
         search_keywords = format % keyword
         puts "Page #{page_num} of #{PAGES_TO_SCRAPE}. Keyword: '#{search_keywords}'"
 
